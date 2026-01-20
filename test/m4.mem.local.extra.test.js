@@ -59,3 +59,23 @@ test('(1 pts) local.mem.get(no key)', (done) => {
     });
   });
 });
+
+
+test('(0 pts) local.mem.get(null) returns keys', (done) => {
+  const key = 'memkeys1';
+  const value = {hello: 'world'};
+
+  distribution.local.mem.put(value, key, (e, v) => {
+    distribution.local.mem.get(null, (e, v) => {
+      try {
+        expect(e).toBeFalsy();
+        expect(Array.isArray(v)).toBe(true);
+        expect(v).toContain(key);
+        done();
+      } catch (error) {
+        done(error);
+      }
+    });
+  });
+});
+

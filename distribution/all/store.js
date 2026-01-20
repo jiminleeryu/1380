@@ -8,6 +8,16 @@
 
 
 /**
+ * @typedef {Object} StoreConfig
+ * @property {string | null} key
+ * @property {string} gid
+ * @property {string} action
+ *
+ * @typedef {StoreConfig | string | null} SimpleConfig
+ */
+
+
+/**
  * @param {Config} config
  */
 function store(config) {

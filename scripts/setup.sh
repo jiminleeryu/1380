@@ -9,22 +9,52 @@ fi
 
 function staleness()
 {
+  course_repo="brown-cs1380/stencil"
+
   git fetch --quiet
   branch=$(git symbolic-ref --short HEAD)
-  upstream=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null || true)
+  remote=""
 
-  if [ -z "$upstream" ]; then
-    echo "[setup] no upstream configured for $branch"
-    exit 1
+  if git remote get-url upstream >/dev/null 2>&1; then
+    remote="upstream"
+  elif git remote get-url origin >/dev/null 2>&1; then
+    url="$(git remote get-url origin 2>/dev/null || true)"
+    if [[ "$url" == *"$course_repo"* ]]; then
+      remote="origin"
+    fi
   fi
 
-  behind=$(git rev-list --count HEAD.."$upstream")
+  if [ -z "$remote" ]; then
+    echo "[setup] could not find a remote named 'upstream' pointing to the course repo."
+    echo "[setup] If you forked the repo, please add the course repo as 'upstream' once:"
+    echo "[setup]   git remote add upstream https://github.com/${course_repo}.git"
+    echo "[setup]   git fetch upstream"
+    return 0
+  fi
+
+  url="$(git remote get-url "$remote" 2>/dev/null || true)"
+  base_ref="refs/remotes/${remote}/${branch}"
+
+  if ! git show-ref --verify --quiet "$base_ref"; then
+    if git show-ref --verify --quiet "refs/remotes/${remote}/main"; then
+      base_ref="refs/remotes/${remote}/main"
+    elif git show-ref --verify --quiet "refs/remotes/${remote}/master"; then
+      base_ref="refs/remotes/${remote}/master"
+    else
+      echo "[setup] could not find a suitable base branch on '$remote' (no main/master). Skipping."
+      return 0
+    fi
+  fi
+  
+  behind="$(git rev-list --count HEAD.."$base_ref" 2>/dev/null || echo 0)"
 
   if [ "$behind" -gt 0 ]; then
-    echo "[setup] your branch '$branch' is behind '$upstream' by $behind commits. Please pull the latest changes."
-    git pull --rebase
+    echo "[setup] your branch '$branch' is behind '$base_ref' by $behind commits. Please pull the latest changes."
+    echo "[setup]  git fetch upstream"
+    echo "[setup]  git merge upstream/$(basename "$base_ref")"
+    echo "[setup]  # or: git rebase upstream/$(basename "$base_ref")"
   else
-    echo "[setup] your branch '$branch' is up to date with '$upstream'!"
+    echo "[setup] your branch '$branch' is up to date with '$base_ref'!"
   fi
 }
 
@@ -34,4 +64,5 @@ cd "$top" || exit 1
 if command -v ssh; then staleness; fi
 
 npm install
+npm update @brown-ds/distribution
 ( cd non-distribution && npm install )

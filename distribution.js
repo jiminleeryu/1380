@@ -19,11 +19,6 @@ function bootstrap(config) {
   globalThis.distribution = distribution;
   distribution.util = require('./distribution/util/util.js');
 
-  /* __start_M3_solution__
-  distribution.util.serialize = distributionLib.util.serialize;
-  distribution.util.deserialize = distributionLib.util.deserialize;
-  __end_M3_solution__ */
-
   // @ts-ignore node.server is lazily initialized.
   distribution.node = require('./distribution/local/node.js');
   distribution.local = require('./distribution/local/local.js');

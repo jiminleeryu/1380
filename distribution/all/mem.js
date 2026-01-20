@@ -7,6 +7,22 @@
 
 
 /**
+ * @typedef {Object} StoreConfig
+ * @property {string | null} key
+ * @property {string} gid
+ * @property {string} action
+ *
+ * @typedef {StoreConfig | string | null} SimpleConfig
+ *
+ * @typedef {Object} Mem
+ * @property {(configuration: SimpleConfig, callback: Callback) => void} get
+ * @property {(state: any, configuration: SimpleConfig, callback: Callback) => void} put
+ * @property {(configuration: SimpleConfig, callback: Callback) => void} del
+ * @property {(configuration: Object.<string, Node>, callback: Callback) => void} reconf
+ */
+
+
+/**
  * @param {Config} config
  * @returns {Mem}
  */

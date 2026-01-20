@@ -65,9 +65,9 @@ function idToNum(id) {
 
 /** @type { Hasher } */
 const naiveHash = (kid, nids) => {
-  nids.sort();
-  const index = Number(idToNum(kid) % BigInt(nids.length));
-  return nids[index];
+  const sortedNids = [...nids].sort();
+  const index = Number(idToNum(kid) % BigInt(sortedNids.length));
+  return sortedNids[index];
 };
 
 /** @type { Hasher } */
