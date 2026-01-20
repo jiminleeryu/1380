@@ -4,7 +4,7 @@ This is the distribution library.
 
 ## Environment Setup
 
-We recommend using the prepared [container image](https://github.com/brown-cs1380/container).
+We recommend using the course's [container image](https://github.com/brown-cs1380/container).
 
 ## Installation
 
