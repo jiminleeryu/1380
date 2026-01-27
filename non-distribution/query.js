@@ -27,10 +27,23 @@ For example, `execSync(`echo "${input}" | ./c/process.sh`, {encoding: 'utf-8'});
 
 const fs = require('fs');
 const {execSync} = require('child_process');
-const path = require('path');
 
 
 function query(indexFile, args) {
+  const queryStr = args.join(' ');
+  // Normalize and stem via existing components, then collapse to a single space-separated string
+  const processed = execSync(`echo "${queryStr}" | ./c/process.sh | ./c/stem.js | tr "\\r\\n" "  "`, {encoding: 'utf-8'}).trim();
+  if (!processed) {
+    return; // nothing to search for
+  }
+  // Read index and print matching lines that include the processed query as substring
+  const content = fs.readFileSync(indexFile, {encoding: 'utf-8'});
+  const lines = content.split('\n');
+  for (const line of lines) {
+    if (line.includes(processed)) {
+      console.log(line);
+    }
+  }
 }
 
 const args = process.argv.slice(2); // Get command-line arguments
