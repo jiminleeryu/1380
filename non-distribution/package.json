@@ -2,9 +2,9 @@
   "name": "cs1380:m0",
   "version": "1.0.0",
   "author": {
-    "name": "<first last?>",
-    "email": "<email@brown.edu?>",
-    "cslogin": "<cslogin?>"
+    "name": "Jimin Ryu",
+    "email": "jimin_ryu@brown.edu",
+    "cslogin": "jlryu"
   },
   "description": "A set of components for cs1380's search engine.",
   "dependencies": {
