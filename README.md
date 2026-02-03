@@ -126,3 +126,37 @@ distribution.node.start(() => {
 # Results and Reflections
 
 > ...
+
+# M1: Serialization / Deserialization
+
+
+## Summary
+
+> Summarize your implementation, including key challenges you encountered. Remember to update the `report` section of the `package.json` file with the total number of hours it took you to complete each task of M1 (`hours`) and the lines of code per task.
+
+
+My implementation comprises 2 software components (`serialize` and `deserialize` functions), totaling 172 lines of code. Key challenges included:
+
+1. **Handling special numeric values (NaN, Infinity, -Infinity)**: JSON.stringify cannot represent these values natively. Solved by converting numbers to strings and reconstructing them with `Number()` during deserialization.
+
+2. **Recursive structure serialization**: Objects and arrays can contain nested values of any type. Solved by recursively calling `serialize` on each value and `JSON.parse` to embed the result as a nested object in the output.
+
+3. **Function serialization/deserialization**: Functions cannot be directly represented in JSON. Solved by using `toString()` to capture the function source code and `eval()` to reconstruct the function during deserialization.
+
+
+## Correctness & Performance Characterization
+
+
+> Describe how you characterized the correctness and performance of your implementation
+
+
+*Correctness*: I wrote 65 tests; these tests take ~1.8 seconds to execute. This includes objects with circular references, native functions, deeply nested structures, mixed-type arrays, Date objects, Error objects, and all primitive types (number, string, boolean, null, undefined).
+
+
+*Performance*: The latency of various subsystems is described in the `"latency"` portion of package.json. The characteristics of my development machines are summarized in the `"dev"` portion of package.json.
+
+| Workload | Serialize (ms) | Deserialize (ms) |
+|----------|----------------|------------------|
+| T2: Base Types | 0.000492 | 0.000556 |
+| T3: Functions | 0.000524 | 0.000915 |
+| T4: Complex | 0.050999 | 0.055684 |
