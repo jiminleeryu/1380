@@ -19,7 +19,7 @@ test('(3 pts) (scenario) expected object', () => {
   /* Prepare an object so it results in an expected serialized string. */
   let object = { x: 42 };
 
-  let serializedObject = '{"type":"object","value":{"x":{"type":"number","value":"42"}}}';
+  let serializedObject = '{"type":"object","value":{"x":{"type":"number","value":"42"}},"id":"0"}';
   expect(util.serialize(object)).toEqual(serializedObject);
 });
 

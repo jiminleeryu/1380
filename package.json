@@ -29,7 +29,7 @@
     {
       "milestone": "M1",
       "hours": 5,
-      "loc": 172,
+      "loc": 475,
       "dev": {
         "cpu-no": 8,
         "mem-gb": 4,
@@ -57,7 +57,7 @@
           0.126094
         ]
       },
-      "dloc": 150
+      "dloc": 303
     },
     {
       "milestone": "M2",
